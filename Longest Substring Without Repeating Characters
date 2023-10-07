@@ -13,8 +13,8 @@ class Solution(object):
             else:
                 mx = cnt if cnt > mx else mx
                 cnt = strl-d[i]
-                while i in d:
-                    d.pop(s[lpt])
+                for c in s[lpt:d[i]+1]:
+                    d.pop(c)
                     lpt += 1
                 d[i] = strl
         
