@@ -1,0 +1,22 @@
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        strl = -1
+        d = dict()
+        cnt = 0
+        mx = 0
+        lpt=0
+        for i in s:
+            strl+=1
+            if i not in d:
+                d[i] = strl
+                cnt += 1
+            else:
+                mx = cnt if cnt > mx else mx
+                cnt = strl-d[i]
+                while i in d:
+                    d.pop(s[lpt])
+                    lpt += 1
+                d[i] = strl
+        
+        mx = cnt if cnt > mx else mx
+        return mx
