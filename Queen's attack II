@@ -1,0 +1,66 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'queensAttack' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. INTEGER n
+#  2. INTEGER k
+#  3. INTEGER r_q
+#  4. INTEGER c_q
+#  5. 2D_INTEGER_ARRAY obstacles
+#
+
+def queensAttack(n, k, r_q, c_q, obstacles):
+    spots = 0
+    x = tuple(obstacles)
+    obstacles = set(x)
+    
+    moves = [ [1,0],[0,1],[-1,0],[0,-1],[1,1],[-1,-1],[-1,1],[1,-1] ]        
+    for x,y in moves:
+        spots += countLine(obstacles,r_q,c_q,n,x,y)
+    return spots
+def countLine(obstacles,rq,cq,n,xx,yy): 
+    ans=0
+    rq += xx
+    cq += yy
+    while inRange(n,rq,cq) and (rq,cq) not in obstacles:
+        ans+=1
+        rq += xx
+        cq += yy
+    return ans
+def inRange(n,x,y):
+    return x>0 and x<=n and y>0 and y<=n
+    
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    first_multiple_input = input().rstrip().split()
+
+    n = int(first_multiple_input[0])
+
+    k = int(first_multiple_input[1])
+
+    second_multiple_input = input().rstrip().split()
+
+    r_q = int(second_multiple_input[0])
+
+    c_q = int(second_multiple_input[1])
+
+    obstacles = []
+
+    for _ in range(k):
+        obstacles.append(tuple(map(int, input().rstrip().split())))
+
+    result = queensAttack(n, k, r_q, c_q, obstacles)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
