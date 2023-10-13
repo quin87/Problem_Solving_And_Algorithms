@@ -1,0 +1,105 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'canReach' function below.
+#
+# The function is expected to return a BOOLEAN_ARRAY.
+# The function accepts following parameters:
+#  1. INTEGER m
+#  2. INTEGER n
+#  3. INTEGER a
+#  4. INTEGER b
+#  5. INTEGER pr
+#  6. INTEGER pc
+#  7. 2D_INTEGER_ARRAY positions
+#
+def isValid(row,col,board,m,n):
+    if row >= 0 and col >= 0 and row < m and col < n:
+        return not(board[row][col]) 
+    return False
+
+def canReach(m, n, a, b, pr, pc,d,k):
+    board = [[False for i in range(n)] for j in range(m)]
+    move_x = [a, b, -b, -a, -a, -b, b, a]
+    move_y = [b, a, a, b, -b, -a, -a, -b]
+    
+    lst=["No"]*k
+    
+    return DFS(pr,pc,board,d,lst,move_x,move_y,m,n,k)
+
+def DFS(row,col,board,d,lst,move_x,move_y,m,n,k):
+
+    cnt = 0 
+    st = []
+    st.append([row, col])
+ 
+    while (len(st) > 0):
+        
+        if cnt == k:
+            return lst
+        
+        curr = st[len(st) - 1]
+        st.remove(st[len(st) - 1])
+        row = curr[0]
+        col = curr[1]
+        
+        
+        # Check if the current popped
+        # cell is a valid cell or not
+        if (isValid(row, col,board,m,n) == False):
+            continue
+ 
+        # Mark the current
+        # cell as visited
+        board[row][col] = True
+        
+        if (row,col) in d:
+            lst[d[(row,col)]] = "Yes"
+            cnt += 1
+ 
+        # Push all the adjacent cells
+        for i in range(8):
+            adjx = row + move_x[i]
+            adjy = col + move_y[i]
+            if adjx >= 0 and adjy >= 0 and adjx < m and adjy < n:
+                  st.append((adjx,adjy))
+                
+
+        
+    return lst
+
+
+if __name__ == '__main__':
+    first_multiple_input = input().rstrip().split()
+
+    m = int(first_multiple_input[0])
+
+    n = int(first_multiple_input[1])
+
+    second_multiple_input = input().rstrip().split()
+
+    a = int(second_multiple_input[0])
+
+    b = int(second_multiple_input[1])
+
+    third_multiple_input = input().rstrip().split()
+
+    pr = int(third_multiple_input[0])
+
+    pc = int(third_multiple_input[1])
+
+    k = int(input().strip())
+
+    c = 0
+    d = {}
+    
+    for _ in range(k):
+        d[tuple(map(int, input().rstrip().split()))]=c
+        c+=1
+    print("\n".join(canReach(m, n, a, b, pr, pc, d,k)))
