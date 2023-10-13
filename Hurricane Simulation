@@ -1,0 +1,84 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+from fractions import Fraction
+#
+# Complete the 'countInBox' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. 2D_INTEGER_ARRAY particleData
+#  2. INTEGER steps
+#  3. INTEGER lx
+#  4. INTEGER ly
+#  5. INTEGER ux
+#  6. INTEGER uy
+#
+
+def countInBox(particleData, steps, lx, ly, ux, uy):
+    finalpos = []
+    output = 0
+    for particle in particleData:
+        xf = particle[2]/particle[3]
+        yf = particle[4]/particle[5]
+        matrix_init = ([particle[0]],[particle[1]])
+        matrix = [ [xf,-yf],[yf,xf] ]
+        bucket = []
+        step = steps
+            
+        while step>1:
+            if step % 2 != 0:
+                bucket.append(matrix)
+                step = step // 2
+            else:
+                step = step // 2
+            matrix = MultMatrix(matrix,matrix)
+        for i in bucket:
+            matrix = MultMatrix(matrix,i)
+        finalpos.append(MultMatrix(matrix,matrix_init))
+
+    for i in finalpos:
+        if i[0][0] >= lx and i[0][0] <= ux and i[1][0] >= ly and i[1][0] <= uy:
+            output += 1
+    return output
+def MultMatrix(m1,m2):
+    res = [[0 for i in range(len(m2[0]))] for j in range(len(m1))]
+    for i in range(len(m1)):
+        for j in range(len(m2[0])):
+            for k in range(len(m2)):
+                res[i][j]=(res[i][j] + m1[i][k] * m2[k][j])
+    return res
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    first_multiple_input = input().rstrip().split()
+
+    lx = int(first_multiple_input[0])
+
+    ly = int(first_multiple_input[1])
+
+    ux = int(first_multiple_input[2])
+
+    uy = int(first_multiple_input[3])
+
+    second_multiple_input = input().rstrip().split()
+
+    t = int(second_multiple_input[0])
+
+    n = int(second_multiple_input[1])
+
+    particleData = []
+
+    for _ in range(n):
+        particleData.append(list(map(int, input().rstrip().split())))
+
+    result = countInBox(particleData, t, lx, ly, ux, uy)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
