@@ -1,0 +1,50 @@
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        d={}
+        l1 = 0                      # Length of string 1
+        for i in s1:                # Hashmap for string1
+            d[i] = d.get(i,0)+1
+            l1 += 1
+        counter = 0                 # Counter for permutations in sliding window
+        for i in range(len(s2)):
+            if i >= l1 and s2[i-l1] in d:
+                d[s2[i-l1]] += 1    # Increment letter outside of sliding window that was in d
+                if d[s2[i-l1]] > 0: 
+                    counter -= 1    # Resets counter if the letter is available for permutation
+            if s2[i] in d:
+                if d[s2[i]] > 0:    
+                    d[s2[i]] -= 1   
+                    counter += 1
+                else:
+                    d[s2[i]] -= 1
+            if counter == l1:
+                return True
+        return False
+
+"""
+Unoptimized Code
+def ck(**dt):
+    #print(dt)
+    for i in dt["stwo"]:
+        v = dt.get(i,0)
+        #print(v,i)
+        if v == 0:
+            #print("Returned False")
+            return False
+        else:
+            dt[i] -= 1
+        #print(dt)
+    return True
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        d={}
+        l1 = 0                      # Length of string 1
+        for i in s1:                # Hashmap for string1
+            d[i] = d.get(i,0)+1
+            l1 += 1
+        for i in range(len(s2)-l1+1):
+            d["stwo"] = s2[i:l1+i]
+            if ck(**d):
+                return True
+        return False
+"""
