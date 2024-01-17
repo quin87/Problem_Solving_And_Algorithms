@@ -1,0 +1,25 @@
+class Solution(object):
+    def closeStrings(self, word1, word2):
+
+        hash1,hash2 = set(),set()
+        ct1 , ct2 = [0]*26,[0]*26
+
+        l1 = len(word1)
+        if l1 != len(word2):
+            return False
+        else:
+            for pt in range(l1):
+                if word1[pt] not in hash1:
+                    hash1.add(word1[pt])
+                    ct1[ord(word1[pt])-ord("a")] = 1
+                else:
+                    ct1[ord(word1[pt])-ord("a")] += 1
+                if word2[pt] not in hash2:
+                    hash2.add(word2[pt])
+                    ct2[ord(word2[pt])-ord("a")] = 1
+                else:
+                    ct2[ord(word2[pt])-ord("a")] += 1
+
+            ct1.sort()
+            ct2.sort()    
+            return hash1 == hash2 and ct1 == ct2
