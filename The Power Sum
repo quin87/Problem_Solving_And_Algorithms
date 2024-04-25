@@ -1,0 +1,40 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'powerSum' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. INTEGER X
+#  2. INTEGER N
+#
+
+def powerSum(X, N):
+    r = math.ceil(X**(1/N))+1
+    def helper(X,N,i,total,r):
+        if total > X or i > r:
+            return 0 
+        if total == X:
+            return 1
+        return helper(X,N,i+1,total+(i**N),r) + helper(X,N,i+1,total,r)
+    return helper(X,N,1,0,r)
+    
+    
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    X = int(input().strip())
+
+    N = int(input().strip())
+
+    result = powerSum(X, N)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
