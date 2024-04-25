@@ -1,0 +1,66 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+from collections import defaultdict 
+
+def calcDistance(first,second):
+    if first == second:
+        return 0
+    else:
+        v = second.index(first[0])
+        second.pop(v)
+        return v + calcDistance(first[1:],second)
+
+def findDistance(members):
+    pairs = []
+    distance = math.inf
+    for member in members:
+        temp = calcDistance(firstmember[0],member[0])
+        #print(temp)
+        if distance >= temp:
+            if distance == temp:
+                pairs.append(member[1])
+            else:
+                distance = temp
+                pairs = [member[1]]
+    return pairs
+
+def findSong(lst):
+    return 1
+        
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    first_multiple_input = input().rstrip().split()
+    k = int(first_multiple_input[0])
+    r = int(first_multiple_input[1])
+    n = int(input())-1
+    firstmember = []
+    firstmember.append(list(map(int,input().split())))
+    firstmember.append(set(map(int,input().split())))
+    members = []
+    for i in range(n):
+        pref = list(map(int,input().split()))
+        ranking = list(map(int,input().split()))
+        members.append((pref,ranking))
+    lowestset = findDistance(members)
+    
+    boo = False
+    result = (-1,math.inf)
+    #print(lowestset)
+    
+    for i in lowestset:
+        for cnt,j in enumerate(i):
+            if j not in firstmember[1]:
+                #print(firstmember[1],j,cnt)
+                if result[1] >= cnt:
+                    if result == (-1,math.inf):
+                        result = (j,cnt)
+                    else:
+                        result = (j,cnt) if result[0] > j else result
+                break
+    fptr.write(str(result[0]) + '\n')
+    fptr.close()
