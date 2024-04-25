@@ -1,0 +1,47 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'find_last_bounce' function below.
+#
+# The function is expected to return an INTEGER_ARRAY.
+# The function accepts following parameters:
+#  1. INTEGER_ARRAY jumps
+#  2. 2D_INTEGER_ARRAY queries
+#
+def hops(jumps,start,stop):
+    for i in range(stop):
+        start = (start + jumps[start])%(len(jumps))
+    return start
+def find_last_bounce(jumps, queries):
+    ans=[]
+    for start,stop in queries:
+        ans.append(hops(jumps,start,stop))
+    return ans
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    first_multiple_input = input().rstrip().split()
+
+    n = int(first_multiple_input[0])
+
+    q = int(first_multiple_input[1])
+
+    jumps = list(map(int, input().rstrip().split()))
+
+    queries = []
+
+    for _ in range(q):
+        queries.append(list(map(int, input().rstrip().split())))
+
+    results = find_last_bounce(jumps, queries)
+
+    fptr.write('\n'.join(map(str, results)))
+    fptr.write('\n')
+
+    fptr.close()
