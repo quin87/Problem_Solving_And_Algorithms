@@ -1,0 +1,82 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+from collections import deque as queue
+#sys.setrecursionlimit(300000)
+
+# Complete the findShortestValuablePath function below.
+def isValid(x,y,maze,status):
+    #print("checking: ",x,y,end=" ")
+    #print(x >= 0,x < m,y >= 0,y < n)
+    if x >= 0 and x < m-1 and y >= 0 and y < n-1:
+        if maze[x][y] not in avoid and (x,y) not in status:
+            return True
+    return False
+
+def findShortestValuablePath(m, n, maze, values, t, row, col, status=set()):
+    
+    q = queue()
+    q.append((row,col,t,0))
+
+    status.add((row,col))
+    #print(status)
+
+    while (len(q) > 0):
+        x,y,loot,step = q.popleft()
+        #print(x,y, maze[x][y],temp,step)
+        for i in range(4):
+            adjx = x + dRow[i]
+            adjy = y + dCol[i]
+            temp = loot
+            if (isValid(adjx, adjy,maze,status)):
+                if maze[adjx][adjy] in "0123456789":
+                    #print(adjx,adjy,maze[adjx][adjy])
+                    temp -= values[int(maze[adjx][adjy])]
+                    if temp <= 0:
+                        return step+1
+                q.append((adjx, adjy,temp,step+1))
+                status.add((adjx,adjy))
+        #step is incrememnted multiple time in foor loop
+    return -1
+                
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    mnt = input().rstrip().split()
+
+    m = int(mnt[0])
+
+    n = int(mnt[1])
+
+    t = int(mnt[2])
+    
+    avoid = ["#","M"]
+
+    maze = []
+    
+    dRow = [ -1, 0, 1, 0]
+    dCol = [ 0, 1, 0, -1]
+    found = False
+    for i in range(m):
+        maze_item = input()
+        maze.append(maze_item)
+        ind = maze_item.find('S')
+
+        if ind != -1:
+            row = i
+            col = ind
+            found = True
+    values = list(map(int, input().rstrip().split()))
+    
+    if not found:
+        result = -1
+    else:
+        result = findShortestValuablePath(m, n, maze, values, t, row, col)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
