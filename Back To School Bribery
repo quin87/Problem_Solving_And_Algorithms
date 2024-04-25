@@ -1,0 +1,54 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'countPairs' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. INTEGER_ARRAY pieces
+#  2. INTEGER k
+#
+
+def countPairs(pieces, k):
+    #for i in pieces:
+    #    print(i," -")
+    hashpieces = {}
+    pairs = 0
+    for piece in pieces:
+        piece = piece%k
+        inv = abs(piece-k)%k
+        #print(inv)
+        if inv in hashpieces:
+            pairs += hashpieces[inv]
+        if piece not in hashpieces:
+            hashpieces[piece]=1
+        else:
+            hashpieces[piece]+=1
+        #print(hashpieces,pairs)
+    return pairs
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    first_multiple_input = input().rstrip().split()
+
+    k = int(first_multiple_input[0])
+
+    n = int(first_multiple_input[1])
+
+    pieces = []
+
+    for _ in range(n):
+        pieces_item = int(input().strip())
+        pieces.append(pieces_item)
+
+    result = countPairs(pieces, k)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
