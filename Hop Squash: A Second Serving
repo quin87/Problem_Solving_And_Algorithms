@@ -1,0 +1,49 @@
+import math
+import os
+import random
+import re
+import sys
+from collections import defaultdict 
+sys.setrecursionlimit(200000)
+def traverse(graph,visited,key):
+    cnt = 0
+    if key in squashpatches:
+        cnt += squashpatches[key]
+    visited.add(key)
+    for neighbour in graph[key]:  
+        if neighbour not in visited:
+            cnt += traverse(graph,visited,neighbour)
+    return cnt
+    
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    
+    k = int(input())
+
+    vegnames = []
+    squashpatches = {}
+    squashind = 0
+    graph = defaultdict(list)
+    visited = set()
+    
+    for _ in range(k):
+        vegnames.append(input())
+        if vegnames[-1] == "Butternut Squash":
+            squashind = len(vegnames)-1
+    n = int(input())
+    for patch in range(1,n+1):
+        vi,qi = input().rstrip().split()
+        if int(vi) == squashind:
+            squashpatches[patch] = int(qi)
+    m = int(input())
+    for _ in range(m):
+        s,t = input().rstrip().split()    
+        s = int(s)
+        t = int(t)
+        graph[s].append(t)
+        graph[t].append(s)
+    
+    result = traverse(graph,visited,0) 
+        
+    fptr.write(str(result) + '\n')
+    fptr.close()
