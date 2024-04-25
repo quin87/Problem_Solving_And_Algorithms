@@ -1,0 +1,90 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+def cons(x, y):
+    return [x, y]
+
+def car(p):
+    return p[0]
+
+def cdr(p):
+    return p[1]
+
+nil = []
+
+def makeBinTree(root, left, right):
+    return cons(left, cons(root, right))
+
+emptyTree = nil
+
+## ----- Place your code in this section -----
+
+## Complete the binary tree ADT below 
+def isEmpty(tree):
+    pass # implement this.
+
+def root(tree):
+    pass # implement this.
+
+def left(tree):
+    pass # implement this.
+
+def right(tree):
+    pass # implement this.
+
+def isLeaf(tree):
+    pass # implement this.
+
+#
+# Complete the 'findNumSpecialPaths' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. BINARY_TREE tree The tree of all links connecting the islands
+#  2. INTEGER secret The secret modulus
+#  3. INTEGER low The minimum number of treasures on a desirable path
+#  4. INTEGER high The maximum number of treasures on a desirable path
+#
+def findNumSpecialPaths(tree, secret, low, high):
+    # Determine the number of paths in tree on which the number of treasures is between low and high
+	pass
+
+## ---- End of Section containing your answer -----
+
+def buildTreeAndSearch(connections, s, l, h):
+    n = len(connections)
+    nodes = [None] * (n+1)
+    nodes[0] = emptyTree
+    for (i, v, j, k) in connections:
+        nodes[i] = makeBinTree(v, nodes[j], nodes[k])
+    r = findNumSpecialPaths(nodes[1], s, l, h)
+    return r
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    first_multiple_input = input().rstrip().split()
+
+    n = int(first_multiple_input[0])
+
+    s = int(first_multiple_input[1])
+
+    l = int(first_multiple_input[2])
+
+    h = int(first_multiple_input[3])
+
+    connections = []
+
+    for _ in range(n):
+        connections.append(list(map(int, input().rstrip().split())))
+
+    result = buildTreeAndSearch(connections, s, l, h)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
