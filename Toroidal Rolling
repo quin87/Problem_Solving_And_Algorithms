@@ -1,0 +1,73 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'findPositions' function below.
+#
+# The function is expected to return a 2D_INTEGER_ARRAY.
+# The function accepts following parameters:
+#  1. INTEGER a
+#  2. INTEGER b
+#  3. INTEGER s
+#  4. 2D_INTEGER_ARRAY queries
+#
+
+def findPositions(a, b, s, queries):
+    output = []
+    for query in queries:
+        matrix = [[a,-1],[1,b]]
+        matrix_init,steps = ([query[0]],[query[1]]),query[2]
+        bucket=[]
+
+        while steps>1:
+            if steps % 2 != 0:
+                bucket.append(matrix)
+                steps = steps//2
+                matrix = MultMatrix(matrix,matrix,s)
+            else:
+                steps = steps//2
+                matrix = MultMatrix(matrix,matrix,s)
+        for i in bucket:
+            matrix = MultMatrix(matrix,i,s)
+        matrix = MultMatrix(matrix,matrix_init,s)
+        output.append([matrix[0][0],matrix[1][0]])
+
+    return output
+#https://www.geeksforgeeks.org/c-program-multiply-two-matrices/ contributed below
+def MultMatrix(m1,m2,s):
+    res = [[0 for i in range(len(m2[0]))] for j in range(len(m1))]
+    for i in range(len(m1)):
+        for j in range(len(m2[0])):
+            for k in range(len(m2)):
+                res[i][j]=(res[i][j] + m1[i][k] * m2[k][j])%s
+    return res
+#""""""
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    first_multiple_input = input().rstrip().split()
+
+    a = int(first_multiple_input[0])
+
+    b = int(first_multiple_input[1])
+
+    s = int(first_multiple_input[2])
+
+    q = int(input().strip())
+
+    queries = []
+
+    for _ in range(q):
+        queries.append(list(map(int, input().rstrip().split())))
+
+    results = findPositions(a, b, s, queries)
+
+    fptr.write('\n'.join([' '.join(map(str, x)) for x in results]))
+    fptr.write('\n')
+
+    fptr.close()
