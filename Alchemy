@@ -1,0 +1,15 @@
+#!/bin/python3
+
+import sys
+import math
+
+def countInvocations(v, m):
+    v += 1
+    natural_log_factorial = math.lgamma(v)
+    lnm = math.log(m,math.e)
+    return math.ceil( natural_log_factorial / lnm )
+if __name__ == "__main__":
+    v, m = input().strip().split(' ')
+    v, m = [int(v), int(m)]
+    count = countInvocations(v, m)
+    print(count)
