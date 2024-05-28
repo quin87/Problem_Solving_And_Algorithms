@@ -26,19 +26,19 @@ emptyTree = nil
 
 ## Complete the binary tree ADT below 
 def isEmpty(tree):
-    pass # implement this.
+    return tree is emptyTree
 
 def root(tree):
-    pass # implement this.
+    return car(cdr(tree))
 
 def left(tree):
-    pass # implement this.
-
+    return car(tree)
+    
 def right(tree):
-    pass # implement this.
+    return cdr(cdr(tree))
 
 def isLeaf(tree):
-    pass # implement this.
+    return isEmpty(left(tree)) and isEmpty(right(tree))
 
 #
 # Complete the 'findNumSpecialPaths' function below.
@@ -51,10 +51,25 @@ def isLeaf(tree):
 #  4. INTEGER high The maximum number of treasures on a desirable path
 #
 def findNumSpecialPaths(tree, secret, low, high):
-    # Determine the number of paths in tree on which the number of treasures is between low and high
-	pass
-
-## ---- End of Section containing your answer -----
+    def helper(tree,secret,sumn,treasure,low,high):
+        
+        sumn += root(tree)
+        if (sumn%secret) == 0:
+            treasure += 1        
+            
+        if isLeaf(tree):
+            if treasure <= high and treasure >= low:
+                return 1
+            else:
+                return 0
+        else:
+            if isEmpty(right(tree)):
+                return helper(left(tree),secret,sumn,treasure,low,high)
+            elif isEmpty(left(tree)):
+                return helper(right(tree),secret,sumn,treasure,low,high)
+            else:
+                return helper(left(tree),secret,sumn,treasure,low,high) + helper(right(tree),secret,sumn,treasure,low,high)
+    return helper(tree,secret,0,0,low,high)
 
 def buildTreeAndSearch(connections, s, l, h):
     n = len(connections)
