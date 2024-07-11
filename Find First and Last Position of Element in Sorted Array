@@ -1,0 +1,44 @@
+class Solution(object):
+    def searchRange(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        ind = binarySearch(nums, 0, len(nums)-1, target)
+        low = 0
+        high = ind
+        llow = ind
+        if ind == -1:
+            return [-1,-1]
+        else:
+            while high != -1:
+                high = binarySearch(nums, low, high-1, target)
+                if high != -1:
+                    llow = high
+            low = ind 
+            high = len(nums)-1
+            while low != -1:
+                low = binarySearch(nums, low+1, high, target)
+                if low != -1:
+                    ind = low
+            return [llow,ind]
+
+# The code below was contributed by https://www.geeksforgeeks.org/binary-search/
+def binarySearch(arr, low, high, x):
+
+    while low <= high:
+
+        mid = low + (high - low) // 2
+
+
+        if arr[mid] == x:
+            return mid
+
+        elif arr[mid] < x:
+            low = mid + 1
+
+        else:
+            high = mid - 1
+
+    return -1
